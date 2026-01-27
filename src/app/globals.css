@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/* ── Font Face ── */
+@font-face {
+  font-family: "Pretendard Variable";
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/PretendardVariable.woff2") format("woff2-variations");
+}
+
+/* ── Design Tokens ── */
+:root {
+  /* Background */
+  --bg-primary: #0c0f14;
+  --bg-secondary: #121827;
+  --bg-card: #1a1f2e;
+  --bg-elevated: #222840;
+  --bg-light: #f7f8fa;
+  --bg-white: #ffffff;
+  --bg-footer: #080a10;
+
+  /* Glass */
+  --glass-subtle: rgba(255, 255, 255, 0.03);
+  --glass-light: rgba(255, 255, 255, 0.05);
+  --glass-medium: rgba(255, 255, 255, 0.08);
+  --glass-strong: rgba(255, 255, 255, 0.12);
+
+  /* Accent */
+  --accent-primary: #7c4dff;
+  --accent-light: #b388ff;
+  --accent-dark: #5e35b1;
+  --accent-glow: rgba(124, 77, 255, 0.4);
+  --accent-subtle: rgba(124, 77, 255, 0.08);
+  --accent-muted: rgba(124, 77, 255, 0.15);
+
+  /* Text on Dark */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --text-muted: rgba(255, 255, 255, 0.3);
+
+  /* Text on Light */
+  --text-dark-primary: #1a1a2e;
+  --text-dark-secondary: #64648c;
+  --text-dark-muted: #9696b4;
+
+  /* Border */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-accent: rgba(124, 77, 255, 0.2);
+
+  /* Animation */
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --duration-fast: 0.15s;
+  --duration-normal: 0.25s;
+  --duration-medium: 0.35s;
+  --duration-slow: 0.6s;
+  --duration-slower: 0.8s;
+}
+
+/* ── Base Reset ── */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scroll Reveal ── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--duration-slower) var(--ease-out),
+    transform var(--duration-slower) var(--ease-out);
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-reveal.stagger > *:nth-child(1) { transition-delay: 0s; }
+.scroll-reveal.stagger > *:nth-child(2) { transition-delay: 0.12s; }
+.scroll-reveal.stagger > *:nth-child(3) { transition-delay: 0.12s; }
+.scroll-reveal.stagger > *:nth-child(4) { transition-delay: 0.24s; }
+.scroll-reveal.stagger > *:nth-child(5) { transition-delay: 0.36s; }
+.scroll-reveal.stagger > *:nth-child(6) { transition-delay: 0.48s; }
+
+/* ── Hero Glow ── */
+@keyframes glowPulse {
+  0% { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0.7; transform: scale(1.1); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Tailwind v4 theme ── */
+@theme {
+  --font-sans: "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
+
+  --color-bg-primary: #0c0f14;
+  --color-bg-secondary: #121827;
+  --color-bg-card: #1a1f2e;
+  --color-bg-light: #f7f8fa;
+  --color-bg-footer: #080a10;
+
+  --color-accent: #7c4dff;
+  --color-accent-light: #b388ff;
+  --color-accent-dark: #5e35b1;
+}
