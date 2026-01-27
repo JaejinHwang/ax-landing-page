@@ -1,30 +1,53 @@
 "use client";
 
 import { GraduationCap, Bot, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SERVICES, BERSIN_STAGES } from "@/lib/constants";
+import {
+  fadeUp,
+  staggerContainer,
+  staggerItem,
+  defaultViewport,
+} from "@/lib/animations";
 
 const iconMap = { GraduationCap, Bot } as const;
 
-export function ServicesSection() {
-  const { ref: cardsRef, isVisible: cardsVisible } = useScrollReveal();
-  const { ref: frameworkRef, isVisible: frameworkVisible } = useScrollReveal();
+// Color themes per service card (2-3)
+const serviceThemes = [
+  {
+    iconBg: "from-[rgba(212,168,120,0.18)] to-[rgba(212,184,150,0.10)]",
+    iconBgHover: "group-hover:from-[rgba(212,168,120,0.28)] group-hover:to-[rgba(212,184,150,0.16)]",
+  },
+  {
+    iconBg: "from-[rgba(140,180,220,0.15)] to-[rgba(160,200,240,0.08)]",
+    iconBgHover: "group-hover:from-[rgba(140,180,220,0.25)] group-hover:to-[rgba(160,200,240,0.14)]",
+  },
+];
 
+export function ServicesSection() {
   return (
-    <section id="services" className="relative bg-[var(--bg-secondary)] py-28 md:py-44 overflow-hidden">
+    <section id="services" className="relative py-24 md:py-36 overflow-hidden" style={{ background: "#0A0F1A" }}>
       {/* Background glow */}
       <div
         className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(circle, rgba(201,149,106,0.05) 0%, transparent 60%)",
+          background: "radial-gradient(circle, rgba(201,149,106,0.04) 0%, transparent 60%)",
+        }}
+      />
+      <div
+        className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, rgba(201,149,106,0.025) 0%, transparent 60%)",
         }}
       />
 
       <div className="relative max-w-[1200px] mx-auto px-6">
-        <div
-          ref={cardsRef}
-          className={`scroll-reveal ${cardsVisible ? "visible" : ""}`}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
         >
           <SectionLabel index="03" />
 
@@ -32,105 +55,326 @@ export function ServicesSection() {
             QANDA AX가 제공하는 서비스
           </h2>
 
-          <p className="text-lg md:text-xl text-white/50 max-w-[650px] mb-20 leading-relaxed">
+          <p className="text-lg md:text-xl text-white/50 max-w-[650px] mb-14 leading-relaxed">
             AI Literacy 교육부터 AI Agent 개발까지, 조직의 AI 전환을 처음부터
             끝까지 함께합니다.
           </p>
+        </motion.div>
 
-          {/* Service Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-28">
-            {SERVICES.map((service, i) => {
-              const Icon = iconMap[service.icon];
-              return (
-                <div
-                  key={i}
-                  className="glass-card-glow p-8 md:p-12 group"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[rgba(201,149,106,0.15)] to-[rgba(212,184,150,0.08)] backdrop-blur-sm flex items-center justify-center mb-6 group-hover:from-[rgba(201,149,106,0.25)] group-hover:to-[rgba(212,184,150,0.12)] transition-all duration-300">
-                    <Icon className="w-6 h-6 text-[var(--accent-light)]" />
-                  </div>
-                  <h3 className="text-[24px] md:text-[28px] font-bold text-white mb-3">
-                    {service.title}
-                  </h3>
-                  <p className="text-[17px] text-white/55 mb-6 leading-relaxed">
-                    {service.description}
-                  </p>
-                  <div className="border-t border-[rgba(255,255,255,0.05)] pt-6 mb-8">
-                    <ul className="space-y-3">
-                      {service.features.map((feature, j) => (
-                        <li
-                          key={j}
-                          className="flex items-start gap-3 text-base text-white/50"
-                        >
-                          <span className="text-[var(--secondary)] mt-0.5 text-sm">
-                            ▸
-                          </span>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <a
-                    href="#cta"
-                    className="inline-flex items-center gap-2 text-base font-semibold text-[var(--accent-light)] hover:text-[var(--secondary)] hover:gap-3 transition-all duration-300"
-                  >
-                    {service.ctaText}
-                    <ArrowRight className="w-4 h-4" />
-                  </a>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Josh Bersin Framework */}
-        <div
-          ref={frameworkRef}
-          className={`scroll-reveal ${frameworkVisible ? "visible" : ""}`}
+        {/* Service Cards (2-3: differentiated color themes) */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-28"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
         >
-          <div className="mb-8">
+          {SERVICES.map((service, i) => {
+            const Icon = iconMap[service.icon];
+            const theme = serviceThemes[i];
+            return (
+              <motion.div
+                key={i}
+                variants={staggerItem}
+                className="glass-card-glow p-8 md:p-12 group relative overflow-hidden"
+                style={{ background: "linear-gradient(135deg, rgba(18,20,25,0.95), rgba(14,15,19,0.97))" }}
+              >
+                {/* Service illustration area (2-3) */}
+                <div className="absolute top-0 right-0 w-[200px] h-[200px] pointer-events-none opacity-[0.04]">
+                  {i === 0 ? (
+                    <svg viewBox="0 0 200 200" fill="none" className="w-full h-full">
+                      <circle cx="100" cy="80" r="30" stroke="var(--accent-light)" strokeWidth="1.5" />
+                      <path d="M70 130 L100 110 L130 130" stroke="var(--accent-light)" strokeWidth="1.5" fill="none" />
+                      <rect x="60" y="135" width="80" height="40" rx="4" stroke="var(--accent-light)" strokeWidth="1" />
+                      <line x1="75" y1="148" x2="125" y2="148" stroke="var(--accent-light)" strokeWidth="0.8" />
+                      <line x1="75" y1="158" x2="115" y2="158" stroke="var(--accent-light)" strokeWidth="0.8" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 200 200" fill="none" className="w-full h-full">
+                      <rect x="55" y="40" width="90" height="120" rx="12" stroke="var(--accent-light)" strokeWidth="1.5" />
+                      <circle cx="100" cy="85" r="15" stroke="var(--accent-light)" strokeWidth="1" />
+                      <circle cx="100" cy="85" r="5" fill="var(--accent-light)" opacity="0.3" />
+                      <line x1="70" y1="120" x2="130" y2="120" stroke="var(--accent-light)" strokeWidth="0.8" />
+                      <line x1="80" y1="132" x2="120" y2="132" stroke="var(--accent-light)" strokeWidth="0.8" />
+                      <circle cx="100" cy="55" r="3" fill="var(--accent-light)" opacity="0.4" />
+                    </svg>
+                  )}
+                </div>
+
+                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${theme.iconBg} ${theme.iconBgHover} backdrop-blur-sm flex items-center justify-center mb-6 transition-all duration-300`}>
+                  <Icon className="w-7 h-7 text-[var(--accent-light)]" />
+                </div>
+                <h3 className="text-[24px] md:text-[28px] font-bold text-white mb-3">
+                  {service.title}
+                </h3>
+                <p className="text-[17px] text-white/55 mb-6 leading-relaxed">
+                  {service.description}
+                </p>
+                <div className="border-t border-[rgba(255,255,255,0.05)] pt-6 mb-8">
+                  <ul className="space-y-3">
+                    {service.features.map((feature, j) => (
+                      <li
+                        key={j}
+                        className="flex items-start gap-3 text-base text-white/50"
+                      >
+                        <span className="text-[var(--secondary)] mt-0.5 text-sm">
+                          ▸
+                        </span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <a
+                  href="#cta"
+                  className="inline-flex items-center gap-2 text-base font-semibold text-[var(--accent-light)] hover:text-[var(--secondary)] hover:gap-3 transition-all duration-300"
+                >
+                  {service.ctaText}
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        {/* Josh Bersin Framework — Ascending Path */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+        >
+          <div className="mb-10">
             <span className="text-sm font-semibold tracking-[1.5px] uppercase gradient-text">
               AI Agent Efficiency Framework
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {BERSIN_STAGES.map((stage, i) => (
-              <div
-                key={i}
-                className="relative glass-card-glow p-6 md:p-8"
+          {/* Desktop: Ascending curve visualization */}
+          <div className="hidden lg:block relative" style={{ height: 540 }}>
+            {/* SVG curve + fill background */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              fill="none"
+            >
+              <defs>
+                <linearGradient id="curveFill" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0%" stopColor="rgba(201,149,106,0)" />
+                  <stop offset="50%" stopColor="rgba(201,149,106,0.06)" />
+                  <stop offset="100%" stopColor="rgba(201,149,106,0.14)" />
+                </linearGradient>
+              </defs>
+
+              {/* Filled area under curve */}
+              <motion.path
+                d="M 12.5,90 C 25,90 25,72 37.5,72 C 50,72 50,48 62.5,48 C 75,48 75,35 87.5,35 L 100,35 L 100,100 L 0,100 L 0,90 Z"
+                fill="url(#curveFill)"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6, duration: 1 }}
+              />
+
+              {/* Curve line */}
+              <motion.path
+                d="M 12.5,90 C 25,90 25,72 37.5,72 C 50,72 50,48 62.5,48 C 75,48 75,35 87.5,35"
+                stroke="rgba(201,149,106,0.4)"
+                strokeWidth="0.3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+              />
+            </svg>
+
+            {/* Node dots (CSS positioned to avoid SVG stretch distortion) */}
+            {[
+              { left: "12.5%", top: "90%" },
+              { left: "37.5%", top: "72%" },
+              { left: "62.5%", top: "48%" },
+              { left: "87.5%", top: "35%" },
+            ].map((pos, idx) => (
+              <motion.div
+                key={`node-${idx}`}
+                className="absolute z-20 flex items-center justify-center"
                 style={{
-                  background: `linear-gradient(135deg, rgba(201, 149, 106, ${0.06 + i * 0.04}), rgba(212, 184, 150, ${0.02 + i * 0.02}))`,
-                  boxShadow:
-                    i === 3
-                      ? "0 0 30px rgba(201,149,106,0.12), inset 0 1px 0 rgba(255,255,255,0.06)"
-                      : "inset 0 1px 0 rgba(255,255,255,0.03)",
+                  left: pos.left,
+                  top: pos.top,
+                  width: 12,
+                  height: 12,
+                  transform: "translate(-50%, -50%)",
+                }}
+                initial={{ scale: 0, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  delay: 0.3 + idx * 0.3,
+                  duration: 0.4,
+                  ease: [0.175, 0.885, 0.32, 1.275],
                 }}
               >
-                {/* Arrow connector (hidden on mobile) */}
-                {i < 3 && (
-                  <div className="hidden lg:block absolute -right-2.5 top-1/2 -translate-y-1/2 z-10 text-[var(--accent-primary)] opacity-30 text-lg">
-                    →
-                  </div>
+                {/* Outer glow */}
+                <div
+                  className="absolute rounded-full"
+                  style={{
+                    width: 28,
+                    height: 28,
+                    background: `radial-gradient(circle, rgba(201,149,106,${0.15 + idx * 0.08}) 0%, transparent 70%)`,
+                  }}
+                />
+                {/* Core dot */}
+                <div
+                  className="rounded-full"
+                  style={{
+                    width: 12,
+                    height: 12,
+                    background: `rgba(201,149,106,${0.5 + idx * 0.15})`,
+                    boxShadow:
+                      idx === 3
+                        ? "0 0 16px rgba(201,149,106,0.5)"
+                        : "none",
+                  }}
+                />
+                {/* Last node pulse ring */}
+                {idx === 3 && (
+                  <motion.div
+                    className="absolute rounded-full"
+                    style={{
+                      width: 32,
+                      height: 32,
+                      border: "1px solid rgba(201,149,106,0.3)",
+                    }}
+                    animate={{
+                      scale: [1, 2.2, 1],
+                      opacity: [0.4, 0, 0.4],
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 2.5,
+                      ease: "easeInOut",
+                    }}
+                  />
                 )}
-                <span className="text-[13px] font-semibold text-white/40 tracking-wider">
-                  Stage {stage.stage}
-                </span>
-                <h4 className="text-[20px] md:text-[22px] font-bold text-white mt-2 mb-3">
-                  {stage.name}
-                </h4>
-                <div className="text-[28px] md:text-[36px] font-extrabold gradient-text mb-2">
-                  {stage.efficiency}
-                </div>
-                <p className="text-sm text-white/40">{stage.description}</p>
-              </div>
+              </motion.div>
             ))}
+
+            {/* Content grid overlay — text positioned ABOVE each node */}
+            <div className="relative z-10 grid grid-cols-4 gap-6 h-full">
+              {BERSIN_STAGES.map((stage, i) => {
+                const paddings = [339, 234, 99, 18];
+                const effSizes = [
+                  "text-[26px]",
+                  "text-[30px]",
+                  "text-[34px]",
+                  "text-[40px]",
+                ];
+                const blockOpacity = [0.45, 0.62, 0.82, 1.0][i];
+                return (
+                  <motion.div
+                    key={i}
+                    style={{ paddingTop: paddings[i] }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: blockOpacity, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      delay: 0.4 + i * 0.25,
+                      duration: 0.5,
+                    }}
+                  >
+                    <span
+                      className="text-[13px] font-semibold tracking-wider text-white/50"
+                    >
+                      Stage {stage.stage}
+                    </span>
+                    <h4 className="text-[18px] lg:text-[20px] font-bold text-white mt-1 mb-2">
+                      {stage.name}
+                    </h4>
+                    <div
+                      className={`${effSizes[i]} font-extrabold gradient-text mb-1`}
+                    >
+                      {stage.efficiency}
+                    </div>
+                    <p className="text-[13px] text-white/50 leading-relaxed">
+                      {stage.description}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
 
-          <p className="text-[13px] text-white/20 italic mt-6">
+          {/* Mobile: Vertical timeline */}
+          <div className="lg:hidden relative pl-10">
+            {/* Vertical gradient line */}
+            <div
+              className="absolute left-[14px] top-2 bottom-2 w-[2px] rounded-full"
+              style={{
+                background:
+                  "linear-gradient(to bottom, rgba(201,149,106,0.15), rgba(201,149,106,0.6))",
+              }}
+            />
+
+            <div className="space-y-10">
+              {BERSIN_STAGES.map((stage, i) => {
+                const blockOpacity = [0.45, 0.62, 0.82, 1.0][i];
+                return (
+                  <motion.div
+                    key={i}
+                    className="relative"
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: blockOpacity, x: 0 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ delay: i * 0.12, duration: 0.4 }}
+                  >
+                    {/* Node dot */}
+                    <div
+                      className="absolute -left-10 top-[6px] flex items-center justify-center"
+                      style={{ width: 12, height: 12 }}
+                    >
+                      <div
+                        className="rounded-full"
+                        style={{
+                          width: i === 3 ? 12 : 10,
+                          height: i === 3 ? 12 : 10,
+                          background: `rgba(201,149,106,${0.3 + i * 0.2})`,
+                          boxShadow:
+                            i === 3
+                              ? "0 0 12px rgba(201,149,106,0.5)"
+                              : "none",
+                        }}
+                      />
+                    </div>
+
+                    <span
+                      className="text-[12px] font-semibold tracking-wider text-white/40"
+                    >
+                      Stage {stage.stage}
+                    </span>
+                    <h4 className="text-[18px] font-bold text-white mt-1">
+                      {stage.name}
+                    </h4>
+                    <div className="text-[24px] font-extrabold gradient-text mt-1">
+                      {stage.efficiency}
+                    </div>
+                    <p className="text-[13px] text-white/40 mt-1">
+                      {stage.description}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          <p className="text-[13px] text-white/20 italic mt-8">
             Source: Josh Bersin Company, Evolving Job Redesign, 2025
           </p>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

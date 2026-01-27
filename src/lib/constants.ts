@@ -1,6 +1,6 @@
 export const NAV_ITEMS = [
   { label: "서비스", href: "#services" },
-  { label: "Why AX", href: "#why-ax" },
+  { label: "AX 소개", href: "#why-ax" },
   { label: "프로세스", href: "#process" },
   { label: "회사소개", href: "#trust" },
 ] as const;

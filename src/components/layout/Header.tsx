@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState /* useEffect */ } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
@@ -12,6 +12,20 @@ export function Header() {
   const isCompact = scrollY > 50 && isScrollingDown;
   const isScrolled = scrollY > 50;
   const [menuOpen, setMenuOpen] = useState(false);
+
+  /* 2-7: Scroll progress indicator (disabled – uncomment to restore)
+  const [scrollProgress, setScrollProgress] = useState(0);
+  useEffect(() => {
+    const updateProgress = () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        setScrollProgress(Math.min(window.scrollY / docHeight, 1));
+      }
+    };
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    return () => window.removeEventListener("scroll", updateProgress);
+  }, []);
+  */
 
   return (
     <>
@@ -28,7 +42,7 @@ export function Header() {
       >
         <div
           className={`max-w-[1200px] mx-auto flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-            isCompact ? "h-14 pl-6 pr-3" : "h-16 px-6"
+            isCompact ? "h-14 pl-6 pr-5 md:pr-3" : "h-16 px-6"
           }`}
         >
           {/* Logo */}
@@ -51,25 +65,17 @@ export function Header() {
 
           {/* Desktop CTA + Mobile menu */}
           <div className="flex items-center gap-4">
-            <span className="hidden md:inline-flex">
-              <Button
-                href="#cta"
-                variant="primary"
-                className={`transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-                  isCompact
-                    ? "!px-4 !py-2 !text-xs !rounded-full"
-                    : "!px-5 !py-2.5 !text-sm"
-                }`}
-              >
-                무료 상담 신청
-              </Button>
-            </span>
-            <a
+            <Button
               href="#cta"
-              className="md:hidden text-sm font-semibold text-[var(--accent-light)]"
+              variant="primary"
+              className={`transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                isCompact
+                  ? "!px-4 !py-2 !text-xs !rounded-full"
+                  : "!px-4 !py-2 !text-xs md:!px-5 md:!py-2.5 md:!text-sm"
+              }`}
             >
-              문의
-            </a>
+              무료 상담 신청
+            </Button>
             <button
               className="md:hidden text-white/50 hover:text-white transition-colors cursor-pointer"
               onClick={() => setMenuOpen(true)}
@@ -79,6 +85,20 @@ export function Header() {
             </button>
           </div>
         </div>
+
+        {/* 2-7: Scroll progress bar (disabled – uncomment to restore)
+        <div
+          className={`absolute bottom-0 h-[2px] bg-gradient-to-r from-[var(--accent-primary)] to-[var(--secondary)] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            isScrolled ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            left: isCompact ? "28px" : "0",
+            width: isCompact
+              ? `calc(${scrollProgress * 100}% - ${scrollProgress * 56}px)`
+              : `${scrollProgress * 100}%`,
+          }}
+        />
+        */}
       </header>
 
       {/* Mobile Overlay */}

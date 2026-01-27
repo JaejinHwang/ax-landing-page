@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     "대기업 AI",
     "공공기관 AI",
   ],
+  icons: {
+    icon: "/images/favicon.png",
+  },
   openGraph: {
     title: "QANDA AX — AI로 일하는 방식을 바꾸다",
     description:

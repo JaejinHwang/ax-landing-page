@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { NAV_ITEMS } from "@/lib/constants";
 
 export function Footer() {
@@ -8,9 +9,13 @@ export function Footer() {
 
       <div className="max-w-[1200px] mx-auto px-6 py-16">
         {/* Logo */}
-        <div className="text-white font-bold text-xl tracking-tight mb-8">
-          QANDA{" "}
-          <span className="gradient-text">AX</span>
+        <div className="mb-8">
+          <Image
+            src="/images/qanda-cx.png"
+            alt="QANDA AX"
+            width={160}
+            height={32}
+          />
         </div>
 
         {/* Nav links */}
@@ -38,20 +43,6 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Mathpresso Inc. All rights
             reserved.
           </p>
-          <div className="flex gap-6">
-            <a
-              href="#"
-              className="text-xs text-white/20 hover:text-white/40 transition-colors duration-300"
-            >
-              개인정보처리방침
-            </a>
-            <a
-              href="#"
-              className="text-xs text-white/20 hover:text-white/40 transition-colors duration-300"
-            >
-              이용약관
-            </a>
-          </div>
         </div>
       </div>
     </footer>

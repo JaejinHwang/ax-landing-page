@@ -13,7 +13,7 @@
 :root {
   /* Background – Deep Navy */
   --bg-primary: #060A12;
-  --bg-secondary: #0A1020;
+  --bg-secondary: #0D1528;
   --bg-card: #111827;
   --bg-elevated: #1A2035;
   --bg-light: #F5F2ED;
@@ -257,7 +257,7 @@
   --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
 
   --color-bg-primary: #060A12;
-  --color-bg-secondary: #0A1020;
+  --color-bg-secondary: #0D1528;
   --color-bg-card: #111827;
   --color-bg-light: #F5F2ED;
   --color-bg-footer: #040810;
