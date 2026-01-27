@@ -15,9 +15,9 @@ interface ButtonProps {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-[var(--accent-primary)] text-white border-transparent shadow-[0_0_20px_rgba(124,77,255,0.2)] hover:shadow-[0_4px_20px_rgba(124,77,255,0.35),0_0_50px_rgba(124,77,255,0.2)] hover:bg-[#6B3FE8] hover:-translate-y-0.5",
+    "relative bg-[var(--accent-primary)] text-white border-transparent shadow-[0_0_24px_rgba(201,149,106,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_4px_28px_rgba(201,149,106,0.4),0_0_60px_rgba(201,149,106,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] hover:bg-[#B58456] hover:-translate-y-0.5 active:translate-y-0",
   secondary:
-    "bg-transparent text-white border-white/30 hover:bg-white/5 hover:border-white/50",
+    "bg-[rgba(255,255,255,0.04)] text-white border-[rgba(255,255,255,0.12)] backdrop-blur-xl hover:bg-[rgba(255,255,255,0.08)] hover:border-[rgba(201,149,106,0.3)] hover:shadow-[0_0_20px_rgba(201,149,106,0.1)]",
   ghost:
     "bg-transparent text-[var(--accent-primary)] border-transparent p-0 hover:gap-3",
 };
@@ -36,7 +36,7 @@ export function Button({
   onClick,
 }: ButtonProps) {
   const baseStyles =
-    "inline-flex items-center justify-center gap-2 font-semibold rounded-lg border transition-[color,background-color,border-color,box-shadow,transform,gap] duration-[0.25s] ease-[cubic-bezier(0.4,0,0.2,1)] cursor-pointer";
+    "inline-flex items-center justify-center gap-2 font-semibold rounded-xl border transition-[color,background-color,border-color,box-shadow,transform,gap] duration-[0.3s] ease-[cubic-bezier(0.4,0,0.2,1)] cursor-pointer";
   const styles = `${baseStyles} ${variantStyles[variant]} ${
     variant !== "ghost" ? sizeStyles[size] : ""
   } ${className}`;

@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export function useScrollPosition() {
   const [scrollY, setScrollY] = useState(0);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     let ticking = false;
@@ -11,7 +13,15 @@ export function useScrollPosition() {
     function onScroll() {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
+          const currentScrollY = window.scrollY;
+          const delta = currentScrollY - lastScrollY.current;
+
+          if (Math.abs(delta) > 10) {
+            setIsScrollingDown(delta > 0);
+            lastScrollY.current = currentScrollY;
+          }
+
+          setScrollY(currentScrollY);
           ticking = false;
         });
         ticking = true;
@@ -22,5 +32,5 @@ export function useScrollPosition() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return scrollY;
+  return { scrollY, isScrollingDown };
 }

@@ -9,11 +9,18 @@ export function SectionLabel({
 }) {
   return (
     <span
-      className={`inline-block font-mono text-xs font-medium tracking-[2px] mb-6 ${
-        dark ? "text-white/30" : "text-[var(--text-dark-muted)]"
+      className={`inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[3px] uppercase mb-6 ${
+        dark ? "text-[var(--accent-light)]" : "text-[var(--accent-primary)]"
       }`}
     >
-      ·{index}
+      <span
+        className={`inline-block w-8 h-px ${
+          dark
+            ? "bg-gradient-to-r from-[var(--accent-primary)] to-transparent"
+            : "bg-gradient-to-r from-[var(--accent-primary)] to-transparent"
+        }`}
+      />
+      {index}
     </span>
   );
 }

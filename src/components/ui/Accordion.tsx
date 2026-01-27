@@ -13,10 +13,10 @@ export function AccordionItem({ question, answer }: AccordionItemProps) {
 
   return (
     <div
-      className={`rounded-xl border transition-colors duration-[0.25s] ${
+      className={`glass-card-glow transition-colors duration-[0.25s] ${
         isOpen
-          ? "border-[var(--border-accent)] bg-[rgba(255,255,255,0.04)]"
-          : "border-[var(--border-subtle)] bg-[var(--glass-subtle)]"
+          ? "!border-[var(--border-accent)]"
+          : ""
       }`}
     >
       <button
@@ -28,7 +28,7 @@ export function AccordionItem({ question, answer }: AccordionItemProps) {
           {question}
         </span>
         <ChevronDown
-          className={`w-5 h-5 text-white/40 shrink-0 transition-transform duration-300 ${
+          className={`w-5 h-5 text-[var(--accent-light)] shrink-0 transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""
           }`}
         />

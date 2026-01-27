@@ -189,11 +189,11 @@ export const TRUST_NUMBERS = [
 ] as const;
 
 export const PARTNERS = [
-  "Google",
-  "Bytedance",
-  "Samsung",
-  "Microsoft",
-  "Anthropic",
+  { name: "Google", logo: "/images/partners/google.svg", heroHeight: 22, sectionHeight: 26 },
+  { name: "Bytedance", logo: "/images/partners/bytedance.svg", heroHeight: 16, sectionHeight: 20 },
+  { name: "Samsung", logo: "/images/partners/samsung.svg", heroHeight: 15, sectionHeight: 18 },
+  { name: "Microsoft", logo: "/images/partners/microsoft.svg", heroHeight: 18, sectionHeight: 22 },
+  { name: "Anthropic", logo: "/images/partners/anthropic.svg", heroHeight: 13, sectionHeight: 16 },
 ] as const;
 
 export const FAQ_ITEMS = [
