@@ -87,14 +87,16 @@ export function TrustSection() {
                 variants={staggerItem}
                 className="relative bg-white/70 backdrop-blur-xl rounded-2xl p-8 shadow-[0_4px_24px_rgba(201,149,106,0.06),0_1px_2px_rgba(0,0,0,0.04)] text-center border border-[rgba(201,149,106,0.06)] hover:shadow-[0_8px_32px_rgba(201,149,106,0.1)] hover:border-[rgba(201,149,106,0.12)] transition-all duration-300 overflow-hidden group"
               >
-                {/* Fluent Emoji decoration */}
-                <Image
-                  src={numberEmojis[i]}
-                  alt=""
-                  width={56}
-                  height={56}
-                  className="absolute top-3 right-3 pointer-events-none select-none opacity-[0.15] group-hover:opacity-[0.25] transition-opacity duration-300"
-                />
+                {/* Fluent Emoji background decoration */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+                  <Image
+                    src={numberEmojis[i]}
+                    alt=""
+                    width={120}
+                    height={120}
+                    className="opacity-[0.07] group-hover:opacity-[0.13] scale-100 group-hover:scale-110 transition-all duration-500 ease-out blur-[0.5px]"
+                  />
+                </div>
                 <CountUpNumber
                   value={item.value}
                   suffix={item.suffix}

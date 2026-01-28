@@ -23,7 +23,7 @@ export function CountUpNumber({
     <span ref={ref} className={className}>
       {count}
       {suffix && (
-        <span className="text-[0.75em] font-semibold ml-0.5 align-middle" style={{ WebkitTextFillColor: 'var(--text-dark-primary)', opacity: 0.6 }}>{suffix}</span>
+        <span className="text-[0.75em] font-semibold ml-0.5 align-middle gradient-text opacity-60">{suffix}</span>
       )}
     </span>
   );

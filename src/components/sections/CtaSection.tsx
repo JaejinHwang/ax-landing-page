@@ -8,15 +8,32 @@ import { fadeUp, defaultViewport } from "@/lib/animations";
 export function CtaSection() {
   const [formData, setFormData] = useState({ company: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`[QANDA AX 상담 요청] ${formData.company}`);
-    const body = encodeURIComponent(
-      `회사명: ${formData.company}\n이메일: ${formData.email}\n\n${formData.message}`
-    );
-    window.location.href = `mailto:contact@qanda-ax.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "전송에 실패했습니다.");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "전송에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -122,14 +139,18 @@ export function CtaSection() {
                 placeholder="AI 교육, Agent 개발 등 관심 분야를 알려주세요"
               />
             </div>
+            {error && (
+              <p className="text-red-400 text-sm text-center">{error}</p>
+            )}
             <div className="text-center pt-2">
               <button
                 type="submit"
-                className="relative inline-flex items-center justify-center px-12 py-5 text-lg font-semibold rounded-xl border border-transparent bg-[var(--accent-primary)] text-white shadow-[0_0_40px_rgba(201,149,106,0.3)] hover:shadow-[0_0_60px_rgba(201,149,106,0.45)] hover:bg-[#B58456] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 cursor-pointer overflow-hidden group"
+                disabled={loading}
+                className="relative inline-flex items-center justify-center px-12 py-5 text-lg font-semibold rounded-xl border border-transparent bg-[var(--accent-primary)] text-white shadow-[0_0_40px_rgba(201,149,106,0.3)] hover:shadow-[0_0_60px_rgba(201,149,106,0.45)] hover:bg-[#B58456] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 cursor-pointer overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               >
                 {/* Shimmer effect (3-1) */}
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
-                <span className="relative">무료 상담 신청</span>
+                <span className="relative">{loading ? "전송 중..." : "무료 상담 신청"}</span>
               </button>
             </div>
           </motion.form>
@@ -141,12 +162,12 @@ export function CtaSection() {
             transition={{ duration: 0.5 }}
           >
             <p className="text-xl font-semibold text-white mb-3">감사합니다!</p>
-            <p className="text-white/50">메일 앱에서 전송을 완료해 주세요.</p>
+            <p className="text-white/50">상담 요청이 성공적으로 전송되었습니다.<br />빠른 시일 내에 연락드리겠습니다.</p>
           </motion.div>
         )}
 
         <p className="text-center text-[15px] text-white/20 font-mono tracking-wide">
-          contact@qanda-ax.com
+          ax@mathpresso.com
         </p>
       </motion.div>
     </section>
