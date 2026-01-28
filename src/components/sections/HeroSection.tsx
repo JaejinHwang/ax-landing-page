@@ -1,8 +1,9 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ArrowDown } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Cormorant_Garamond } from "next/font/google";
 import { Button } from "@/components/ui/Button";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -21,10 +22,49 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
+const rollingTexts = [
+  "일하는 방식을",
+  "조직 문화를",
+  "업무 효율을",
+  "성장 전략을",
+  "의사결정을",
+];
+
 export function HeroSection() {
-  const headingText = "AI로 일하는 방식을 바꾸다";
-  const mainText = headingText.slice(0, -3); // "AI로 일하는 방식을 "
-  const accentText = headingText.slice(-3); // "바꾸다"
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isRolling, setIsRolling] = useState(false);
+  const [textWidths, setTextWidths] = useState<number[]>([]);
+  const measurerRef = useRef<HTMLSpanElement>(null);
+
+  // Measure all rolling text widths on mount
+  useEffect(() => {
+    const measurer = measurerRef.current;
+    if (!measurer) return;
+    const widths = rollingTexts.map((text) => {
+      measurer.textContent = text;
+      return measurer.getBoundingClientRect().width;
+    });
+    measurer.textContent = rollingTexts[0];
+    setTextWidths(widths);
+  }, []);
+
+  useEffect(() => {
+    // First transition after initial letter stagger completes (~1.5s)
+    const firstTimer = setTimeout(() => {
+      setIsRolling(true);
+      setCurrentIndex(1);
+    }, 2000);
+
+    return () => clearTimeout(firstTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!isRolling) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % rollingTexts.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [isRolling]);
 
   return (
     <section
@@ -150,21 +190,64 @@ export function HeroSection() {
           <SectionLabel index="01" />
         </motion.div>
 
-        {/* Hero heading with letter stagger animation (1-1: mobile font size fix) */}
+        {/* Hero heading with rolling text animation */}
         <motion.h1
-          className="text-[32px] sm:text-[40px] md:text-[64px] font-extrabold leading-[1.15] tracking-[-1.5px] text-white mb-4"
+          className="relative text-[32px] sm:text-[40px] md:text-[64px] font-extrabold leading-[1.15] tracking-[-1.5px] text-white mb-4"
           variants={letterContainer}
           initial="hidden"
           animate="visible"
         >
-          {mainText.split("").map((char, i) => (
-            <motion.span key={i} variants={letterItem} className="inline-block" style={char === " " ? { width: "0.3em" } : undefined}>
-              {char === " " ? "\u00A0" : char}
+          {"AI로".split("").map((char: string, i: number) => (
+            <motion.span key={i} variants={letterItem} className="inline-block">
+              {char}
             </motion.span>
           ))}
+          <motion.span variants={letterItem} className="inline-block" style={{ width: "0.3em" }}>
+            {"\u00A0"}
+          </motion.span>
+
+          {/* Rolling gradient text */}
+          <motion.span variants={letterItem} className="inline-block">
+            <span
+              className="inline-block relative overflow-hidden align-bottom"
+              style={{
+                height: "1.15em",
+                width: textWidths.length > 0 ? textWidths[currentIndex] : undefined,
+                transition: isRolling ? "width 1.2s cubic-bezier(0.76, 0, 0.24, 1)" : undefined,
+              }}
+            >
+              <AnimatePresence initial={false}>
+                <motion.span
+                  key={currentIndex}
+                  className="absolute left-0 top-0 gradient-text whitespace-nowrap"
+                  initial={{ y: "100%", opacity: 0, filter: "blur(4px)" }}
+                  animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+                  exit={{ y: "-100%", opacity: 0, filter: "blur(4px)" }}
+                  transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
+                >
+                  {rollingTexts[currentIndex]}
+                </motion.span>
+              </AnimatePresence>
+              {/* Invisible spacer for initial width before measurement */}
+              {textWidths.length === 0 && (
+                <span className="invisible whitespace-nowrap">{rollingTexts[currentIndex]}</span>
+              )}
+            </span>
+          </motion.span>
+          {/* Hidden measurer for text widths */}
+          <span
+            ref={measurerRef}
+            aria-hidden
+            className="absolute invisible whitespace-nowrap pointer-events-none"
+          />
+
+          <motion.span variants={letterItem} className="inline-block" style={{ width: "0.3em" }}>
+            {"\u00A0"}
+          </motion.span>
           <br className="sm:hidden" />
-          {accentText.split("").map((char, i) => (
-            <motion.span key={`accent-${i}`} variants={letterItem} className="inline-block gradient-text">
+
+          {"바꾸다".split("").map((char: string, i: number) => (
+            <motion.span key={`suffix-${i}`} variants={letterItem} className="inline-block">
               {char}
             </motion.span>
           ))}

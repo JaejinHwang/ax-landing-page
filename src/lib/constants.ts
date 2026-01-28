@@ -107,11 +107,10 @@ export const WHY_AX = [
   {
     number: "/02",
     title: "검증된 AI 적용 경험",
-    points: [],
-    stats: [
-      { value: "1억+", label: "사용자" },
-      { value: "100억+", label: "문제 풀이" },
-      { value: "50개국+", label: "글로벌 서비스" },
+    points: [
+      "1억+ 사용자가 선택한 AI 서비스",
+      "100억+ 문제 풀이 데이터 보유",
+      "50개국+ 글로벌 서비스 운영",
     ],
   },
   {

@@ -51,7 +51,6 @@ export function WhyAxSection() {
         >
           {WHY_AX.map((item, i) => {
             const CardIcon = cardIcons[i];
-            const isStatsCard = "stats" in item && item.stats;
             return (
               <motion.div
                 key={i}
@@ -107,22 +106,6 @@ export function WhyAxSection() {
                   </ul>
                 )}
 
-                {/* 2-4: Stats card differentiated layout */}
-                {isStatsCard && (
-                  <div className="grid grid-cols-3 gap-4 mt-2">
-                    {item.stats!.map((stat, j) => (
-                      <div key={j} className="text-center">
-                        <span className="block text-[28px] md:text-[36px] font-extrabold text-white leading-tight">
-                          {stat.value.replace("+", "")}
-                          <span className="gradient-text">+</span>
-                        </span>
-                        <span className="text-sm text-white/40 mt-1 block">
-                          {stat.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </motion.div>
             );
           })}

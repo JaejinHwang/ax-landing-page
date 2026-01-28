@@ -13,8 +13,13 @@ import {
   defaultViewport,
 } from "@/lib/animations";
 
-// 2-8: Icons for each trust number card
-const numberIcons = ["👤", "🧮", "🌍", "🏆"];
+// Fluent Emoji 3D icons for each trust number card
+const numberEmojis = [
+  "/images/emoji/person.png",
+  "/images/emoji/abacus.png",
+  "/images/emoji/globe.png",
+  "/images/emoji/trophy.png",
+];
 
 
 export function TrustSection() {
@@ -82,10 +87,14 @@ export function TrustSection() {
                 variants={staggerItem}
                 className="relative bg-white/70 backdrop-blur-xl rounded-2xl p-8 shadow-[0_4px_24px_rgba(201,149,106,0.06),0_1px_2px_rgba(0,0,0,0.04)] text-center border border-[rgba(201,149,106,0.06)] hover:shadow-[0_8px_32px_rgba(201,149,106,0.1)] hover:border-[rgba(201,149,106,0.12)] transition-all duration-300 overflow-hidden group"
               >
-                {/* Background icon decoration (2-8) */}
-                <span className="absolute top-2 right-3 text-[48px] opacity-[0.06] pointer-events-none select-none group-hover:opacity-[0.1] transition-opacity duration-300">
-                  {numberIcons[i]}
-                </span>
+                {/* Fluent Emoji decoration */}
+                <Image
+                  src={numberEmojis[i]}
+                  alt=""
+                  width={56}
+                  height={56}
+                  className="absolute top-3 right-3 pointer-events-none select-none opacity-[0.15] group-hover:opacity-[0.25] transition-opacity duration-300"
+                />
                 <CountUpNumber
                   value={item.value}
                   suffix={item.suffix}

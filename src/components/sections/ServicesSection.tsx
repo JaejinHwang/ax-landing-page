@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { GraduationCap, Bot, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -12,6 +13,11 @@ import {
 } from "@/lib/animations";
 
 const iconMap = { GraduationCap, Bot } as const;
+
+const serviceImages = [
+  "/images/services/ai-literacy.jpg",
+  "/images/services/ai-agent.jpg",
+];
 
 // Color themes per service card (2-3)
 const serviceThemes = [
@@ -77,61 +83,50 @@ export function ServicesSection() {
                 key={i}
                 variants={staggerItem}
                 className="glass-card-glow p-8 md:p-12 group relative overflow-hidden"
-                style={{ background: "linear-gradient(135deg, rgba(18,20,25,0.95), rgba(14,15,19,0.97))" }}
               >
-                {/* Service illustration area (2-3) */}
-                <div className="absolute top-0 right-0 w-[200px] h-[200px] pointer-events-none opacity-[0.04]">
-                  {i === 0 ? (
-                    <svg viewBox="0 0 200 200" fill="none" className="w-full h-full">
-                      <circle cx="100" cy="80" r="30" stroke="var(--accent-light)" strokeWidth="1.5" />
-                      <path d="M70 130 L100 110 L130 130" stroke="var(--accent-light)" strokeWidth="1.5" fill="none" />
-                      <rect x="60" y="135" width="80" height="40" rx="4" stroke="var(--accent-light)" strokeWidth="1" />
-                      <line x1="75" y1="148" x2="125" y2="148" stroke="var(--accent-light)" strokeWidth="0.8" />
-                      <line x1="75" y1="158" x2="115" y2="158" stroke="var(--accent-light)" strokeWidth="0.8" />
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 200 200" fill="none" className="w-full h-full">
-                      <rect x="55" y="40" width="90" height="120" rx="12" stroke="var(--accent-light)" strokeWidth="1.5" />
-                      <circle cx="100" cy="85" r="15" stroke="var(--accent-light)" strokeWidth="1" />
-                      <circle cx="100" cy="85" r="5" fill="var(--accent-light)" opacity="0.3" />
-                      <line x1="70" y1="120" x2="130" y2="120" stroke="var(--accent-light)" strokeWidth="0.8" />
-                      <line x1="80" y1="132" x2="120" y2="132" stroke="var(--accent-light)" strokeWidth="0.8" />
-                      <circle cx="100" cy="55" r="3" fill="var(--accent-light)" opacity="0.4" />
-                    </svg>
-                  )}
-                </div>
+                {/* Background photo + dim overlay */}
+                <Image
+                  src={serviceImages[i]}
+                  alt=""
+                  fill
+                  className="object-cover pointer-events-none"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-black/80 group-hover:bg-black/70 transition-colors duration-500 pointer-events-none" />
 
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${theme.iconBg} ${theme.iconBgHover} backdrop-blur-sm flex items-center justify-center mb-6 transition-all duration-300`}>
-                  <Icon className="w-7 h-7 text-[var(--accent-light)]" />
+                <div className="relative z-10">
+                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${theme.iconBg} ${theme.iconBgHover} backdrop-blur-sm flex items-center justify-center mb-6 transition-all duration-300`}>
+                    <Icon className="w-7 h-7 text-[var(--accent-light)]" />
+                  </div>
+                  <h3 className="text-[24px] md:text-[28px] font-bold text-white mb-3">
+                    {service.title}
+                  </h3>
+                  <p className="text-[17px] text-white/55 mb-6 leading-relaxed">
+                    {service.description}
+                  </p>
+                  <div className="border-t border-[rgba(255,255,255,0.08)] pt-6 mb-8">
+                    <ul className="space-y-3">
+                      {service.features.map((feature, j) => (
+                        <li
+                          key={j}
+                          className="flex items-start gap-3 text-base text-white/60"
+                        >
+                          <span className="text-[var(--secondary)] mt-0.5 text-sm">
+                            ▸
+                          </span>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <a
+                    href="#cta"
+                    className="inline-flex items-center gap-2 text-base font-semibold text-[var(--accent-light)] hover:text-[var(--secondary)] hover:gap-3 transition-all duration-300"
+                  >
+                    {service.ctaText}
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
                 </div>
-                <h3 className="text-[24px] md:text-[28px] font-bold text-white mb-3">
-                  {service.title}
-                </h3>
-                <p className="text-[17px] text-white/55 mb-6 leading-relaxed">
-                  {service.description}
-                </p>
-                <div className="border-t border-[rgba(255,255,255,0.05)] pt-6 mb-8">
-                  <ul className="space-y-3">
-                    {service.features.map((feature, j) => (
-                      <li
-                        key={j}
-                        className="flex items-start gap-3 text-base text-white/50"
-                      >
-                        <span className="text-[var(--secondary)] mt-0.5 text-sm">
-                          ▸
-                        </span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <a
-                  href="#cta"
-                  className="inline-flex items-center gap-2 text-base font-semibold text-[var(--accent-light)] hover:text-[var(--secondary)] hover:gap-3 transition-all duration-300"
-                >
-                  {service.ctaText}
-                  <ArrowRight className="w-4 h-4" />
-                </a>
               </motion.div>
             );
           })}
@@ -150,9 +145,16 @@ export function ServicesSection() {
             </span>
           </div>
 
-          {/* Desktop: Ascending curve visualization */}
-          <div className="hidden lg:block relative" style={{ height: 540 }}>
-            {/* SVG curve + fill background */}
+          {/* Desktop: Ascending curve visualization — full viewport */}
+          <div
+            className="hidden lg:block relative"
+            style={{
+              height: 540,
+              width: "100vw",
+              marginLeft: "calc(-50vw + 50%)",
+            }}
+          >
+            {/* SVG curve + fill — full viewport */}
             <svg
               className="absolute inset-0 w-full h-full pointer-events-none"
               viewBox="0 0 100 100"
@@ -167,9 +169,9 @@ export function ServicesSection() {
                 </linearGradient>
               </defs>
 
-              {/* Filled area under curve */}
+              {/* Filled area under curve — edge to edge */}
               <motion.path
-                d="M 12.5,90 C 25,90 25,72 37.5,72 C 50,72 50,48 62.5,48 C 75,48 75,35 87.5,35 L 100,35 L 100,100 L 0,100 L 0,90 Z"
+                d="M 0,95 C 5,95 5,90 12.5,90 C 25,90 25,72 37.5,72 C 50,72 50,48 62.5,48 C 75,48 75,35 87.5,35 L 100,30 L 100,100 L 0,100 Z"
                 fill="url(#curveFill)"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -193,7 +195,7 @@ export function ServicesSection() {
               />
             </svg>
 
-            {/* Node dots (CSS positioned to avoid SVG stretch distortion) */}
+            {/* Node dots */}
             {[
               { left: "12.5%", top: "90%" },
               { left: "37.5%", top: "72%" },
@@ -265,7 +267,7 @@ export function ServicesSection() {
             ))}
 
             {/* Content grid overlay — text positioned ABOVE each node */}
-            <div className="relative z-10 grid grid-cols-4 gap-6 h-full">
+            <div className="relative z-10 grid grid-cols-4 gap-6 h-full px-6">
               {BERSIN_STAGES.map((stage, i) => {
                 const paddings = [339, 234, 99, 18];
                 const effSizes = [
